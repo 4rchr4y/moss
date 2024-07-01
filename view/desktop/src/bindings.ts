@@ -3,6 +3,14 @@
 /** user-defined commands **/
 
 export const commands = {
+  async createProject(input: CreateProjectMetaInput): Promise<Result<ProjectMeta[], string>> {
+    try {
+      return { status: 'ok', data: await TAURI_INVOKE('create_project', { input }) }
+    } catch (e) {
+      if (e instanceof Error) throw e
+      else return { status: 'error', error: e as any }
+    }
+  },
   async appReady(): Promise<void> {
     await TAURI_INVOKE('app_ready')
   },
@@ -16,6 +24,12 @@ export const commands = {
 /** user-defined statics **/
 
 /** user-defined types **/
+
+export type BoundedString<L> = { inner: string }
+export type CreateProjectMetaInput = { source: string }
+export type NanoId = BoundedString<NanoIdDefault>
+export type NanoIdDefault = null
+export type ProjectMeta = { id: NanoId; source: string }
 
 /** tauri-specta globals **/
 
