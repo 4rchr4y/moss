@@ -1,0 +1,12 @@
+[package]
+name = "workbench_tgui"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+anyhow.workspace = true
+
+platform_formation_common.workspace = true
+
+configuration.workspace = true

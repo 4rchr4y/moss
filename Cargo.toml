@@ -18,8 +18,10 @@ members = [
     "lib/types",
 
     "platform/base",
+    "platform/window/tgui",
+    "platform/formation/common",
     "platform/configuration",
-    "platform/workbench",
+
 
     "platform/conf",
     "platform/pwd",
@@ -31,6 +33,10 @@ members = [
     "net",
 
     "view/desktop/bin",
+
+    "view/shared/workbench/service/configuration",
+    "view/shared/workbench/tgui",
+
 ]
 
 # [profile.release]
@@ -54,7 +60,12 @@ moss_base = { path = "lib/moss_base" }
 
 base = { path = "platform/base" }
 configuration = { path = "platform/configuration" }
-workbench = { path = "platform/workbench" }
+
+platform_window_tgui = { path = "platform/window/tgui" }
+platform_formation_common = { path = "platform/formation/common" }
+
+workbench_tgui = { path = "view/shared/workbench/tgui" }
+workbench_service_configuration = { path = "view/shared/workbench/service/configuration" }
 
 bus = { path = "kernel/bus" }
 mac = { path = "lib/mac" }

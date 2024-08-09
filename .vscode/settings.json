@@ -6,6 +6,7 @@
     "bindgen",
     "canonicalize",
     "chrono",
+    "Downcaster",
     "filetree",
     "hashbrown",
     "inmem",
@@ -93,5 +94,4 @@
       "mode": "auto"
     }
   ],
-
 }

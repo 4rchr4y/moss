@@ -56,9 +56,9 @@ impl ConfigurationService {
         let configuration = Configuration::new(
             default_configuration_model,
             policy_configuration_model,
-            user_configuration_model,
-            ConfigurationModel::empty(),
-            ConfigurationModel::empty(),
+            Arc::new(user_configuration_model),
+            Arc::new(ConfigurationModel::empty()),
+            Arc::new(ConfigurationModel::empty()),
         );
 
         let configuration_editing = ConfigurationEditingService::new(config_file_path.clone());

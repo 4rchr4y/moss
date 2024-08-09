@@ -1,0 +1,1 @@
+pub mod workspace_configuration_model;

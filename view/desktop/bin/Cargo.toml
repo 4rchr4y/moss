@@ -22,6 +22,12 @@ app.workspace = true
 configuration.workspace = true
 parking_lot.workspace = true
 tracing.workspace = true
+
+platform_window_tgui.workspace = true
+platform_formation_common.workspace = true
+workbench_tgui.workspace = true
+
+
 surrealdb = { workspace = true, features = ["kv-rocksdb"] }
 strum = { workspace = true, features = ["derive"] }
 tokio = { workspace = true, features = ["full"] }

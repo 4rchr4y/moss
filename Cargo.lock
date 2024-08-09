@@ -1773,6 +1773,8 @@ dependencies = [
  "macos-trampoline",
  "mimalloc",
  "parking_lot",
+ "platform_formation_common",
+ "platform_window_tgui",
  "serde",
  "serde_json",
  "specta",
@@ -1786,6 +1788,7 @@ dependencies = [
  "tauri-specta",
  "tokio",
  "tracing",
+ "workbench_tgui",
 ]
 
 [[package]]
@@ -5018,6 +5021,17 @@ name = "pkg-config"
 version = "0.3.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d231b230927b5e4ad203db57bbcbee2802f6bce620b1e4a9024a07d94e2907ec"
+
+[[package]]
+name = "platform_formation_common"
+version = "0.1.0"
+dependencies = [
+ "hashbrown 0.14.5",
+]
+
+[[package]]
+name = "platform_window_tgui"
+version = "0.1.0"
 
 [[package]]
 name = "plist"
@@ -9117,20 +9131,22 @@ dependencies = [
 ]
 
 [[package]]
-name = "workbench"
+name = "workbench_service_configuration"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "arc-swap",
  "configuration",
- "hashbrown 0.14.5",
- "lazy-regex",
- "lazy_static",
- "parking_lot",
- "schemars",
- "serde",
  "serde_json",
- "tracing",
+ "workspace",
+]
+
+[[package]]
+name = "workbench_tgui"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "configuration",
+ "platform_formation_common",
 ]
 
 [[package]]
