@@ -2,7 +2,18 @@ import { useTranslation } from "react-i18next";
 import { commands, SessionInfoDTO } from "../bindings";
 import React, { useEffect, useState } from "react";
 import { listen } from "@tauri-apps/api/event";
-import { Tooltip, CodeIcon } from "../../../shared/ui/src";
+import {
+  Tooltip,
+  CodeIcon,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuIconWrapper,
+  Icon,
+  SearchIcon,
+} from "../../../shared/ui/src";
 
 export const Home: React.FC = () => {
   const { t } = useTranslation(["ns1", "ns2"]);
@@ -61,6 +72,26 @@ export const Home: React.FC = () => {
         <Tooltip label="Test">
           <CodeIcon className="fill-red-500 w-4" />
         </Tooltip>
+      </div>
+
+      <div>
+        <DropdownMenu>
+          <DropdownMenuTrigger>Click me!</DropdownMenuTrigger>
+
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <DropdownMenuIconWrapper>
+                <Icon>
+                  <SearchIcon className="text-red-600" />
+                </Icon>
+              </DropdownMenuIconWrapper>
+              Menu item 1
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <DropdownMenuLabel>Menu item 2</DropdownMenuLabel>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </main>
   );

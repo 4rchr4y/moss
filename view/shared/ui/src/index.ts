@@ -12,3 +12,4 @@ export * from "./SearchShortcutIcon";
 export * from "./SettingsIcon";
 export * from "./QuickSearchIcon";
 export * from "./Tooltip";
+export * from "./DropdownMenu";

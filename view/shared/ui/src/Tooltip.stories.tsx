@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import Tooltip from "./Tooltip";
-import "./styles.css";
 
 const meta = {
   title: "Shared/Tooltip",
