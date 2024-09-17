@@ -19,6 +19,7 @@ export async function readThemesFromFiles(baseDirectory: BaseDirectory, themePat
   }
 
   const entries = await readDir(themePath, { baseDir: baseDirectory });
+
   for (const entry of entries) {
     if (entry.isFile && entry.name.endsWith(".json")) {
       const themeString = await readTextFile(`${themePath}/${entry.name}`, {

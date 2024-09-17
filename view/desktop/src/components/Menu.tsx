@@ -18,6 +18,9 @@ export const Menu = () => {
         <NavLink className={isActive + " bg-yellow-300 text-primary px-20"} to="/logs">
           logs
         </NavLink>
+        <NavLink className={isActive + " bg-sky-400 text-primary px-20"} to="/Dockview">
+          Dockview
+        </NavLink>
       </div>
     </nav>
   );

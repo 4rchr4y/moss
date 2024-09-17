@@ -110,6 +110,10 @@ function rgbaWithOpacity(variableName: keyof ThemeCssVariables): string {
   return `rgba(var(${variableName}))`;
 }
 
+function rgbaValueToRgbaString(rgbaValues: string): string {
+  return `rgba(${rgbaValues})`;
+}
+
 export class Convert {
   public static toTheme(json: string): Theme {
     return cast(JSON.parse(json), createReference("Theme"));

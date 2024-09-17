@@ -43,4 +43,6 @@ export const Properties = ({ className, children, ...props }: ComponentProps<"as
   );
 };
 
-Content.displayName = "Content";
+export const DockviewPanelLayout = ({ children }: { children: React.ReactNode }) => {
+  return <div className="h-full overflow-auto">{children}</div>;
+};

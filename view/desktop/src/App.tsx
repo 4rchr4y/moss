@@ -1,14 +1,17 @@
-import "@/i18n";
-import "@repo/ui/src/fonts.css";
-import { Settings, Content, Home, Menu, RootLayout, Sidebar, Logs } from "@/components";
-import { Suspense, useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { twMerge } from "tailwind-merge";
-import { Icon, MenuItem, IconTitle, ThemeProvider } from "@repo/ui";
-import { useTranslation } from "react-i18next";
-import { Resizable, ResizablePanel } from "./components/Resizable";
-import { Convert, Theme } from "@repo/theme";
 import { commands } from "@/bindings";
+import { Content, RootLayout, Sidebar } from "@/components";
+import "@/i18n";
+import { Convert, Theme } from "@repo/theme";
+import { Icon, IconTitle, MenuItem, ThemeProvider } from "@repo/ui";
+import "@repo/ui/src/fonts.css";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { twMerge } from "tailwind-merge";
+import RCDock from "./components/RCDock/RCdock";
+import { Resizable, ResizablePanel } from "./components/Resizable";
+import { cn } from "./utils";
+
+import * as Pages from "./pages";
 
 const handleFetchAllThemes = async () => {
   try {
@@ -45,8 +48,21 @@ enum IconState {
   Disabled = "text-primary bg-opacity-50",
 }
 
+// DOCKVIEW
+// default
+const DefaultPanel = () => <div className={cn(`h-full grid place-items-center text-3xl`)}>DefaultPanel</div>;
+
+const WatermarkPanel = () => (
+  <div className="h-full w-full grid place-items-center bg-white">
+    <div>
+      <div className="text-center text-5xl font-bold">No content chosen</div>
+      <img className="w-80 mx-auto" src="https://media.tenor.com/OA8KFcZxPjsAAAAi/sad-emoji.gif" alt="" />
+    </div>
+  </div>
+);
+
 function App() {
-  const [sideBarVisible, setSideBarVisibility] = useState(true);
+  const [sideBarVisible] = useState(true);
   const { i18n } = useTranslation();
   const [themes, setThemes] = useState<string[]>([]);
   const [selectedTheme, setSelectedTheme] = useState<Theme | undefined>(undefined);
@@ -56,16 +72,12 @@ function App() {
     const initializeThemes = async () => {
       try {
         const allThemes = await handleFetchAllThemes();
-        if (allThemes) {
-          setThemes(allThemes);
-        }
+        if (allThemes) setThemes(allThemes);
 
         const savedThemeName = localStorage.getItem("theme");
         let themeToUse: Theme | undefined;
 
-        if (savedThemeName) {
-          themeToUse = await handleReadTheme(savedThemeName);
-        }
+        if (savedThemeName) themeToUse = await handleReadTheme(savedThemeName);
 
         if (themeToUse) {
           setSelectedTheme(themeToUse);
@@ -77,7 +89,6 @@ function App() {
         console.error("Failed to initialize themes:", error);
       }
     };
-
     initializeThemes();
   }, []);
 
@@ -85,9 +96,7 @@ function App() {
   useEffect(() => {
     const setLanguageFromLocalStorage = () => {
       const savedLanguage = localStorage.getItem("language");
-      if (savedLanguage) {
-        i18n.changeLanguage(savedLanguage);
-      }
+      if (savedLanguage) i18n.changeLanguage(savedLanguage);
     };
     setLanguageFromLocalStorage();
   }, [i18n]);
@@ -96,23 +105,20 @@ function App() {
   useEffect(() => {
     const handleStorageChange = async () => {
       const storedTheme = localStorage.getItem("theme");
-      if (storedTheme) {
-        setSelectedTheme(await handleReadTheme(storedTheme));
-      }
+      if (storedTheme) setSelectedTheme(await handleReadTheme(storedTheme));
     };
 
     window.addEventListener("storage", handleStorageChange);
-
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, [themes]);
 
   useEffect(() => {
-    if (!selectedTheme) {
-      console.error("Failed to initialize theme");
-    }
+    if (!selectedTheme) console.error("Failed to initialize theme");
   }, [selectedTheme]);
+
+  const onAddTab = (Page: keyof typeof Pages) => {};
 
   return (
     <>
@@ -140,7 +146,7 @@ function App() {
                     />
                   </MenuItem>
 
-                  <MenuItem className="group">
+                  <MenuItem className="group" onClick={() => onAddTab("HomePage")}>
                     <Icon icon="Home1" className={twMerge(IconState.Default, IconState.Hover, "min-w-4")} />
                     <IconTitle className="text-primary text-sm" title="Home" />
                   </MenuItem>
@@ -160,9 +166,9 @@ function App() {
                     <IconTitle className="text-primary text-sm" title="Goals" />
                   </MenuItem>
 
-                  <MenuItem className="group">
+                  <MenuItem className="group" onClick={() => onAddTab("LogsPage")}>
                     <Icon icon="Reports" className={twMerge(IconState.Default, IconState.Hover, "min-w-4")} />
-                    <IconTitle className="text-primary text-sm" title="Reports" />
+                    <IconTitle className="text-primary text-sm" title="Logs" />
                   </MenuItem>
 
                   <MenuItem className="group">
@@ -173,7 +179,7 @@ function App() {
                     />
                   </MenuItem>
 
-                  <MenuItem className="group">
+                  <MenuItem className="group" onClick={() => onAddTab("SettingsPage")}>
                     <Icon icon="Settings" className={twMerge(IconState.Default, IconState.Hover, "min-w-4")} />
                     <IconTitle className="text-primary text-sm" title="Settings" />
                   </MenuItem>
@@ -185,17 +191,9 @@ function App() {
                 </Sidebar>
               </ResizablePanel>
               <ResizablePanel>
-                <Content className="content relative flex flex-col overflow-auto h-full">
-                  <Suspense fallback="loading">
-                    <BrowserRouter>
-                      <Menu />
-                      <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/settings" element={<Settings themes={themes} />} />
-                        <Route path="/logs" element={<Logs />} />
-                      </Routes>
-                    </BrowserRouter>
-                  </Suspense>
+                <Content className="content relative flex flex-col overflow-auto h-full w-full">
+                  {/* <Lumino /> */}
+                  <RCDock />
                 </Content>
               </ResizablePanel>
             </Resizable>
@@ -205,4 +203,5 @@ function App() {
     </>
   );
 }
+
 export default App;
