@@ -11,6 +11,9 @@ import {
   DropdownMenuLabel,
   Icon,
 } from "@repo/ui";
+import { invokeCmd } from "@/tauri";
+
+export type DescribeActivityOutput = { tooltip: string; order: number };
 
 const SessionComponent = () => {
   const { t } = useTranslation(["ns1", "ns2"]);
@@ -29,12 +32,22 @@ const SessionComponent = () => {
     }
   };
 
+  let getAllActivities = async () => {
+    try {
+      const responses = (await invokeCmd("sidebar_get_all_activities")) as DescribeActivityOutput[];
+      console.log(responses);
+    } catch (err) {
+      console.error("Failed to get workbench state:", err);
+    }
+  };
+
   useEffect(() => {
     const unlisten = listen<number>("data-stream", (event) => {
       setData(event.payload);
     });
 
     getWorkbenchState();
+    getAllActivities();
 
     return () => {
       unlisten.then((f) => f());

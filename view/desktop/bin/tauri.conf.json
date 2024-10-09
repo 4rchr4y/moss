@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
-  "productName": "Moss Compass",
+  "productName": "Moss Studio",
   "version": "0.1.0",
   "identifier": "moss-studio.dev",
   "build": {
@@ -14,7 +14,7 @@
     "macOSPrivateApi": true,
     "windows": [
       {
-        "title": "Moss Compass",
+        "title": "Moss Studio",
         "hiddenTitle": true,
         "width": 1400,
         "height": 750,

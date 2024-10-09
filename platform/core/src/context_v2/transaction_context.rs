@@ -1,5 +1,3 @@
-#![feature(negative_impls)]
-
 use derive_more::{Deref, DerefMut};
 
 use super::atom::Atom;

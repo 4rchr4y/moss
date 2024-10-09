@@ -5,6 +5,7 @@ mod menu;
 mod service;
 
 use anyhow::{Context as _, Result};
+use command::cmd_sidebar_part;
 use platform_core::context_v2::async_context::AsyncContext;
 use platform_core::context_v2::ContextCell;
 use platform_core::platform::cross::client::CrossPlatformClient;
@@ -79,10 +80,10 @@ fn initialize_app(
     platform_client: Rc<CrossPlatformClient>,
     native_window_configuration: NativeWindowConfiguration,
 ) -> Result<App> {
-    let builder = create_specta_builder();
+    // let builder = create_specta_builder();
 
-    #[cfg(debug_assertions)]
-    export_typescript_bindings(&builder)?;
+    // #[cfg(debug_assertions)]
+    // export_typescript_bindings(&builder)?;
 
     //  TODO: move to StorageService
     let db = Arc::new(
@@ -94,7 +95,17 @@ fn initialize_app(
     let platform_info_clone = native_window_configuration.platform_info.clone();
     let service_group = create_service_registry(native_window_configuration)?;
     let tao_app = tauri::Builder::default()
-        .invoke_handler(builder.invoke_handler())
+        .invoke_handler(tauri::generate_handler![
+            cmd_dummy::workbench_get_state,
+            cmd_dummy::create_project,
+            cmd_dummy::restore_session,
+            cmd_dummy::app_ready,
+            cmd_dummy::update_font_size,
+            cmd_dummy::fetch_all_themes,
+            cmd_dummy::read_theme,
+            cmd_base::native_platform_info,
+            cmd_sidebar_part::sidebar_get_all_activities
+        ])
         .setup(move |app: &mut App| setup_app(app, ctx, service_group, db, platform_info_clone))
         .menu(menu::setup_window_menu)
         .plugin(tauri_plugin_os::init())
@@ -114,8 +125,27 @@ fn setup_app(
         .get_unchecked::<MockStorageService>()
         .get_last_window_state();
 
-    let workbench = Workbench::new(&mut ctx, service_group, window_state.workspace_id)?;
+    let mut workbench = Workbench::new(&mut ctx, service_group, window_state.workspace_id)?;
     workbench.initialize(&mut ctx)?;
+
+    // workbench.add_activity(
+    //     "activityBar.launchpad",
+    //     Activity {
+    //         title: "Launchpad".to_string(),
+    //         icon: "icon_name.svg".to_string(),
+    //         order: Some(1),
+    //         spot: ActivitySpot::Left,
+    //     },
+    // );
+    // workbench.add_activity(
+    //     "activityBar.essentials",
+    //     Activity {
+    //         title: "Essentials".to_string(),
+    //         icon: "icon_name.svg".to_string(),
+    //         order: Some(2),
+    //         spot: ActivitySpot::Left,
+    //     },
+    // );
 
     let window = app.get_webview_window("main").unwrap();
     let app_state = AppState {
@@ -144,20 +174,20 @@ fn setup_app(
     Ok(())
 }
 
-fn create_specta_builder() -> Builder {
-    tauri_specta::Builder::<tauri::Wry>::new()
-        .events(collect_events![])
-        .commands(collect_commands![
-            cmd_dummy::workbench_get_state,
-            cmd_dummy::create_project,
-            cmd_dummy::restore_session,
-            cmd_dummy::app_ready,
-            cmd_dummy::update_font_size,
-            cmd_dummy::fetch_all_themes,
-            cmd_dummy::read_theme,
-            cmd_base::native_platform_info,
-        ])
-}
+// fn create_specta_builder() -> Builder {
+//     tauri_specta::Builder::<tauri::Wry>::new()
+//         .events(collect_events![])
+//         .commands(collect_commands![
+//             cmd_dummy::workbench_get_state,
+//             cmd_dummy::create_project,
+//             cmd_dummy::restore_session,
+//             cmd_dummy::app_ready,
+//             cmd_dummy::update_font_size,
+//             cmd_dummy::fetch_all_themes,
+//             cmd_dummy::read_theme,
+//             cmd_base::native_platform_info,
+//         ])
+// }
 
 fn create_service_registry(
     native_window_configuration: NativeWindowConfiguration,

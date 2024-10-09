@@ -21,6 +21,9 @@ impl UserProfileService {
         home_dir: PathBuf,
         fs_service: Arc<dyn AbstractDiskFileSystemService>,
     ) -> Result<Self> {
+        // TODO: use dirs crate
+        // https://crates.io/crates/dirs
+
         let config_dir = home_dir.join(".config").join("moss");
 
         let settings_resource = config_dir

@@ -1,6 +1,9 @@
 [workspace]
 resolver = "2"
 members = [
+    "lib-rs/moss_uikit",
+    "lib-rs/moss_ui",
+
     "platform/core",
     "platform/fs",
     "platform/formation",
@@ -33,7 +36,11 @@ codegen-units = 1
 
 
 [workspace.dependencies]
+moss_hecs = { git = "https://github.com/keenawa-co/moss_hecs.git", branch = "master" }
+moss_hecs_hierarchy = { git = "https://github.com/keenawa-co/moss_hecs_hierarchy.git", branch = "main" }
 
+moss_uikit = { path = "lib-rs/moss_uikit" }
+moss_ui = { path = "lib-rs/moss_ui" }
 
 platform_core = { path = "platform/core" }
 platform_utl = { path = "platform/utl" }
@@ -88,3 +95,9 @@ dyn-clone = "1.0.17"
 cargo_metadata = "0.18"
 pathdiff = "0.2"
 toml = "0.8.19"
+spin = "0.9.8"
+bencher = "0.1.5"
+rand = "0.8.3"
+trybuild = "1.0.23"
+serde_test = "1.0.117"
+ts-rs = "10.0"

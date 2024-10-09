@@ -1,6 +1,8 @@
 pub mod contribution;
 pub mod window;
 
+pub mod command;
+
 use std::{
     any::Any,
     cell::{Cell, RefCell},
@@ -11,6 +13,10 @@ use std::{
 
 use anyhow::Result;
 use contribution::WORKBENCH_TAO_WINDOW;
+use hashbrown::HashSet;
+use moss_hecs::{Entity, EntityBuilder, Frame};
+use moss_hecs_hierarchy::*;
+use moss_uikit::{primitive::Tooltip, state::Order};
 use once_cell::unsync::OnceCell;
 use platform_configuration::{
     attribute_name, configuration_policy::ConfigurationPolicyService,
@@ -26,7 +32,6 @@ use platform_fs::disk::file_system_service::{
 };
 use platform_user_profile::user_profile_service::UserProfileService as PlatformUserProfileService;
 use platform_workspace::{Workspace, WorkspaceId};
-use specta::Type;
 use tauri::{AppHandle, Emitter, WebviewWindow};
 use workbench_service_configuration_tao::configuration_service::WorkspaceConfigurationService;
 use workbench_service_environment_tao::environment_service::NativeEnvironmentService;
@@ -63,13 +68,14 @@ impl MockFontSizeService {
     }
 }
 
-#[derive(Debug, Type, Serialize)]
+#[derive(Debug, Serialize)]
 pub enum WorkbenchState {
     Empty,
     Workspace,
 }
 
 pub struct Workbench {
+    frame: Frame,
     workspace_id: WorkspaceId,
     service_registry: Rc<RefCell<ServiceRegistry>>,
     configuration_registry: Atom<ConfigurationRegistry>,
@@ -77,6 +83,10 @@ pub struct Workbench {
     font_size_service: Atom<MockFontSizeService>,
     _observe_font_size_service: OnceCell<Subscription>,
     tao_handle: OnceCell<Rc<AppHandle>>,
+    // sizes: SecondaryMap<ViewKey, S>
+    // known_views: SlotMap<ViewKey, View>,
+    // activity_bar_part: Part<ActivityBar>,
+    known_activities: HashSet<Entity>,
 }
 
 unsafe impl<'a> Sync for Workbench {}
@@ -109,16 +119,39 @@ impl Workbench {
         })?;
 
         Ok(Self {
+            frame: Frame::new(),
             workspace_id,
             service_registry: Rc::new(RefCell::new(service_registry)),
             configuration_registry,
             font_size_service: font_service_atom,
             _observe_font_size_service: OnceCell::new(),
             tao_handle: OnceCell::new(),
+            known_activities: HashSet::new(),
         })
     }
 
-    pub fn initialize<'a>(&'a self, ctx: &mut AsyncContext) -> Result<()> {
+    pub fn initialize<'a>(&'a mut self, ctx: &mut AsyncContext) -> Result<()> {
+        let activity_launchpad_entity = {
+            let mut entity = EntityBuilder::new();
+            entity
+                .add(Tooltip { text: "Launchpad" })
+                .add(Order { value: 1 });
+
+            self.frame.spawn(entity.build())
+        };
+
+        let activity_essentials_entity = {
+            let mut entity = EntityBuilder::new();
+            entity
+                .add(Tooltip { text: "Essentials" })
+                .add(Order { value: 2 });
+
+            self.frame.spawn(entity.build())
+        };
+
+        self.known_activities.insert(activity_launchpad_entity);
+        self.known_activities.insert(activity_essentials_entity);
+
         // let cell = async_ctx
         //     .upgrade()
         //     .ok_or_else(|| anyhow!("context was released"))?;

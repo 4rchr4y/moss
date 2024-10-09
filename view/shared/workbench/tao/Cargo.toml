@@ -5,15 +5,22 @@ edition = "2021"
 
 
 [dependencies]
+moss_hecs = { workspace = true, features = ["macros"] }
+moss_hecs_hierarchy = { workspace = true }
+moss_uikit = { workspace = true }
+moss_ui = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json.workspace = true
 sysinfo.workspace = true
-specta.workspace = true
 anyhow.workspace = true
 hashbrown.workspace = true
 lazy_static.workspace = true
 tauri.workspace = true
 once_cell.workspace = true
+slotmap.workspace = true
+specta.workspace = true
+derive_more.workspace = true
+ts-rs.workspace = true
 
 platform_core.workspace = true
 platform_fs.workspace = true

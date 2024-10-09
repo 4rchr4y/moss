@@ -1,6 +1,6 @@
 use anyhow::{Context as _, Result};
 use derive_more::{Deref, DerefMut};
-use std::{cell::RefCell, future::Future, rc::Weak};
+use std::{future::Future, rc::Weak};
 
 use crate::executor::{BackgroundExecutor, MainThreadExecutor, Task};
 

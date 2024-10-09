@@ -1,6 +1,7 @@
 {
   "rust-analyzer.showUnlinkedFileNotification": false,
   "cSpell.words": [
+    "activites",
     "ahash",
     "autodocs",
     "bindgen",
@@ -8,7 +9,6 @@
     "chrono",
     "Deque",
     "Downcaster",
-    "Emmiteble",
     "filetree",
     "hashbrown",
     "Hasher",
@@ -38,7 +38,6 @@
     "sess",
     "shadcn",
     "slotmap",
-    "smallvec",
     "smol",
     "specta",
     "sqlx",
@@ -48,8 +47,8 @@
     "sysinfo",
     "tablename",
     "tauri",
+    "tgui",
     "thiserror",
-    "Transactable",
     "Turborepo",
     "Uncapitalize",
     "unpark",
