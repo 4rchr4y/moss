@@ -60,7 +60,7 @@
     "@repo/moss-desktop": "workspace:*",
     "@repo/tailwind-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@storybook/react": "^8.5.2",
+    "@storybook/react": "^8.6.2",
     "@tauri-apps/cli": "^2.2.7",
     "i18next": "^24.2.2",
     "i18next-http-backend": "^3.0.2",
