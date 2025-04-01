@@ -27,7 +27,7 @@ jobs:
 
       - name: Get all changed Rust files
         id: rust
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v46
         with:
           files: |
             **.rs
@@ -35,7 +35,7 @@ jobs:
 
       - name: Get all changed NodeJS files
         id: node
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v46
         with:
           files: |
             **.ts
