@@ -22,7 +22,7 @@
     "@repo/tailwind-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@storybook/addon-designs": "^8.1.0",
-    "@storybook/addon-essentials": "^8.5.3",
+    "@storybook/addon-essentials": "^8.6.12",
     "@storybook/addon-interactions": "^8.5.3",
     "@storybook/addon-links": "^8.5.3",
     "@storybook/addon-onboarding": "^8.5.3",
